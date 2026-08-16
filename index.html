@@ -1,0 +1,313 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>Elijah's Birthday Party</title>
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, minimum-scale=1, user-scalable=no">
+<style>
+  html, body {
+    margin: 0;
+    padding: 0;
+    height: 100%;
+    width: 100%;
+    background: #0b1550;
+    overflow: hidden;
+    touch-action: pan-x pan-y;
+  }
+
+  .stage {
+    position: relative;
+    height: 100vh;
+    width: 100vw;
+    overflow: hidden;
+    background: radial-gradient(ellipse at center, #16218c 0%, #0b1550 70%, #060b30 100%);
+  }
+
+  .frame {
+    position: absolute;
+    inset: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .frame img {
+    max-width: 100vw;
+    max-height: 100vh;
+    width: auto;
+    height: auto;
+    object-fit: contain;
+    animation:
+      introPop 1.1s cubic-bezier(.22,1.4,.4,1) both,
+      kenburns 20s ease-in-out 1.1s infinite;
+    will-change: transform;
+  }
+
+  @keyframes introPop {
+    0%   { opacity: 0; transform: scale(0.82); }
+    65%  { opacity: 1; transform: scale(1.04); }
+    100% { opacity: 1; transform: scale(1); }
+  }
+
+  @keyframes kenburns {
+    0%   { transform: scale(1) translate(0, 0); }
+    50%  { transform: scale(1.055) translate(-1.2%, -0.8%); }
+    100% { transform: scale(1) translate(0, 0); }
+  }
+
+  /* balloons drifting up over the whole scene */
+  .balloon {
+    position: absolute;
+    bottom: -140px;
+    width: 46px;
+    height: 58px;
+    border-radius: 50% 50% 48% 48% / 60% 60% 40% 40%;
+    opacity: 0.92;
+    animation-name: rise, sway;
+    animation-timing-function: linear, ease-in-out;
+    animation-iteration-count: infinite, infinite;
+    box-shadow: inset -6px -8px 10px rgba(0,0,0,0.18), inset 6px 6px 10px rgba(255,255,255,0.25);
+  }
+  .balloon::after {
+    content: '';
+    position: absolute;
+    left: 50%;
+    bottom: -34px;
+    width: 1px;
+    height: 34px;
+    background: rgba(255,255,255,0.35);
+  }
+
+  @keyframes rise {
+    0%   { bottom: -140px; }
+    100% { bottom: 115vh; }
+  }
+  @keyframes sway {
+    0%, 100% { margin-left: 0px; }
+    50%      { margin-left: 28px; }
+  }
+
+  .b1 { left: 4%;  background: #e21f2b; animation-duration: 13s, 3.2s; animation-delay: 0s, 0s; }
+  .b2 { left: 14%; background: #1f5ee2; animation-duration: 16s, 4s;   animation-delay: 2.5s, 0s; }
+  .b3 { left: 26%; background: #f2c114; animation-duration: 12s, 2.8s; animation-delay: 5s, 0s; }
+  .b4 { left: 62%; background: #e21f2b; animation-duration: 15s, 3.6s; animation-delay: 1s, 0s; }
+  .b5 { left: 74%; background: #1f5ee2; animation-duration: 14s, 3.1s; animation-delay: 4s, 0s; }
+  .b6 { left: 88%; background: #f2c114; animation-duration: 17s, 4.4s; animation-delay: 3s, 0s; }
+  .b7 { left: 50%; background: #e21f2b; animation-duration: 13.5s, 3.4s; animation-delay: 6.5s, 0s; }
+  .b8 { left: 94%; background: #1f5ee2; animation-duration: 15.5s, 3.9s; animation-delay: 0.5s, 0s; }
+
+  /* twinkling sparkles/stars */
+  .spark {
+    position: absolute;
+    color: #ffe873;
+    font-size: 20px;
+    text-shadow: 0 0 8px rgba(255,232,115,0.9);
+    animation: twinkle 2.4s ease-in-out infinite;
+  }
+  @keyframes twinkle {
+    0%, 100% { opacity: 0.15; transform: scale(0.7) rotate(0deg); }
+    50%      { opacity: 1;    transform: scale(1.15) rotate(15deg); }
+  }
+
+  .s1  { top: 8%;  left: 6%;  animation-delay: 0s; }
+  .s2  { top: 15%; left: 22%; animation-delay: 0.6s; font-size: 14px; }
+  .s3  { top: 6%;  left: 40%; animation-delay: 1.2s; }
+  .s4  { top: 12%; left: 58%; animation-delay: 0.3s; font-size: 16px; }
+  .s5  { top: 20%; left: 80%; animation-delay: 1.6s; }
+  .s6  { top: 35%; left: 90%; animation-delay: 0.9s; font-size: 14px; }
+  .s7  { top: 70%; left: 8%;  animation-delay: 1.9s; }
+  .s8  { top: 80%; left: 30%; animation-delay: 0.4s; font-size: 14px; }
+  .s9  { top: 85%; left: 70%; animation-delay: 1.1s; }
+  .s10 { top: 65%; left: 92%; animation-delay: 1.5s; font-size: 16px; }
+
+  /* funny gag reel: hockey, McDavid, pizza, swimming, Ronaldo, Kaleb jokes cycling every 36s */
+  .gag {
+    position: absolute;
+    z-index: 5;
+    font-weight: 800;
+    font-family: -apple-system, "Helvetica Neue", Arial, sans-serif;
+    color: #fff;
+    text-shadow: 2px 2px 0 #000, -1px -1px 0 #000, 1px -1px 0 #000, -1px 1px 0 #000;
+    white-space: nowrap;
+    opacity: 0;
+    animation-duration: 42s;
+    animation-iteration-count: infinite;
+    animation-timing-function: cubic-bezier(.3,1.6,.4,1);
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    padding: 8px 18px;
+    border-radius: 999px;
+    border: 3px solid #000;
+    font-size: 22px;
+  }
+
+  .gag-hockey {
+    bottom: 20%;
+    left: -20%;
+    background: #e21f2b;
+    animation-name: gagHockey;
+    animation-delay: 0s;
+  }
+  @keyframes gagHockey {
+    0%   { opacity: 0; transform: translateX(0)    scale(0.5) rotate(-8deg); }
+    4%   { opacity: 1; transform: translateX(8vw)  scale(1)   rotate(2deg); }
+    20%  { opacity: 1; transform: translateX(78vw) scale(1)   rotate(0deg); }
+    26%  { opacity: 0; transform: translateX(98vw) scale(0.7) rotate(4deg); }
+    100% { opacity: 0; transform: translateX(0); }
+  }
+
+  .gag-mcdavid {
+    bottom: 6%;
+    left: 50%;
+    background: #1f5ee2;
+    animation-name: gagMcdavid;
+    animation-delay: 6s;
+  }
+  @keyframes gagMcdavid {
+    0%   { opacity: 0; transform: translate(-50%, 24px) scale(0.5)  rotate(-6deg); }
+    4%   { opacity: 1; transform: translate(-50%, 0)    scale(1.18) rotate(3deg); }
+    10%  { opacity: 1; transform: translate(-50%, 0)    scale(1)    rotate(0deg); }
+    20%  { opacity: 1; transform: translate(-50%, 0)    scale(1)    rotate(0deg); }
+    26%  { opacity: 0; transform: translate(-50%, 12px) scale(0.7)  rotate(-3deg); }
+    100% { opacity: 0; transform: translate(-50%, 0); }
+  }
+
+  .gag-pizza {
+    bottom: 8%;
+    left: 2%;
+    background: #f2c114;
+    color: #1a1a1a;
+    text-shadow: none;
+    animation-name: gagPizza;
+    animation-delay: 12s;
+  }
+  @keyframes gagPizza {
+    0%   { opacity: 0; transform: translate(0, 0)        scale(0.4) rotate(0deg); }
+    4%   { opacity: 1; transform: translate(6vw, -8vh)   scale(1)   rotate(70deg); }
+    20%  { opacity: 1; transform: translate(52vw, -46vh) scale(1.1) rotate(380deg); }
+    26%  { opacity: 0; transform: translate(66vw, -60vh) scale(0.7) rotate(430deg); }
+    100% { opacity: 0; transform: translate(0, 0); }
+  }
+
+  .gag-swim {
+    top: 62%;
+    left: -20%;
+    background: #1f5ee2;
+    animation-name: gagSwim;
+    animation-delay: 18s;
+  }
+  @keyframes gagSwim {
+    0%   { opacity: 0; transform: translateX(0)    scale(0.6) rotate(0deg); }
+    4%   { opacity: 1; transform: translateX(8vw)  scale(1)   rotate(-3deg); }
+    12%  { transform: translateX(30vw) scale(1) rotate(3deg); }
+    20%  { opacity: 1; transform: translateX(75vw) scale(1)   rotate(-3deg); }
+    26%  { opacity: 0; transform: translateX(98vw) scale(0.8) rotate(0deg); }
+    100% { opacity: 0; transform: translateX(0); }
+  }
+
+  .gag-ronaldo {
+    top: 46%;
+    left: 100%;
+    background: #2fa84f;
+    animation-name: gagRonaldo;
+    animation-delay: 24s;
+  }
+  @keyframes gagRonaldo {
+    0%   { opacity: 0; transform: translateX(0)      scale(0.5) rotate(0deg); }
+    4%   { opacity: 1; transform: translateX(-10vw)  scale(1)   rotate(-30deg); }
+    20%  { opacity: 1; transform: translateX(-82vw)  scale(1)   rotate(320deg); }
+    26%  { opacity: 0; transform: translateX(-100vw) scale(0.7) rotate(360deg); }
+    100% { opacity: 0; transform: translateX(0); }
+  }
+
+  .gag-kaleb {
+    top: 3%;
+    left: -20%;
+    background: #e21f2b;
+    animation-name: gagKaleb;
+    animation-delay: 30s;
+  }
+  @keyframes gagKaleb {
+    0%   { opacity: 0; transform: translateX(0)    scale(0.5) rotate(-6deg); }
+    4%   { opacity: 1; transform: translateX(10vw) scale(1.1) rotate(3deg); }
+    20%  { opacity: 1; transform: translateX(75vw) scale(1)   rotate(0deg); }
+    26%  { opacity: 0; transform: translateX(98vw) scale(0.7) rotate(4deg); }
+    100% { opacity: 0; transform: translateX(0); }
+  }
+
+  .gag-school {
+    top: 4%;
+    left: 50%;
+    background: #ff8c1a;
+    animation-name: gagSchool;
+    animation-delay: 36s;
+  }
+  @keyframes gagSchool {
+    0%   { opacity: 0; transform: translate(-50%, -24px) scale(0.5)  rotate(6deg); }
+    4%   { opacity: 1; transform: translate(-50%, 0)     scale(1.18) rotate(-3deg); }
+    10%  { opacity: 1; transform: translate(-50%, 0)     scale(1)    rotate(0deg); }
+    20%  { opacity: 1; transform: translate(-50%, 0)     scale(1)    rotate(0deg); }
+    26%  { opacity: 0; transform: translate(-50%, -12px) scale(0.7)  rotate(3deg); }
+    100% { opacity: 0; transform: translate(-50%, 0); }
+  }
+
+  /* soft glow pulse around the whole scene, like ambient party lights */
+  .stage::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    pointer-events: none;
+    box-shadow: inset 0 0 140px 40px rgba(226, 31, 43, 0.0);
+    animation: glow 5s ease-in-out infinite;
+  }
+  @keyframes glow {
+    0%, 100% { box-shadow: inset 0 0 160px 30px rgba(31, 94, 226, 0.15); }
+    50%      { box-shadow: inset 0 0 160px 30px rgba(226, 31, 43, 0.15); }
+  }
+</style>
+</head>
+<body>
+  <div class="stage">
+    <div class="frame">
+      <img src="/welcome.png" alt="Welcome to Elijah's Birthday Party">
+    </div>
+
+    <div class="balloon b1"></div>
+    <div class="balloon b2"></div>
+    <div class="balloon b3"></div>
+    <div class="balloon b4"></div>
+    <div class="balloon b5"></div>
+    <div class="balloon b6"></div>
+    <div class="balloon b7"></div>
+    <div class="balloon b8"></div>
+
+    <div class="spark s1">&#10022;</div>
+    <div class="spark s2">&#10022;</div>
+    <div class="spark s3">&#10022;</div>
+    <div class="spark s4">&#10022;</div>
+    <div class="spark s5">&#10022;</div>
+    <div class="spark s6">&#10022;</div>
+    <div class="spark s7">&#10022;</div>
+    <div class="spark s8">&#10022;</div>
+    <div class="spark s9">&#10022;</div>
+    <div class="spark s10">&#10022;</div>
+
+    <div class="gag gag-hockey">&#127954; SHOOTS&hellip; SCORES!</div>
+    <div class="gag gag-mcdavid">&#128640; I LOVE MCDAVID&hellip; DON'T TELL DAD, HE'S A CANUCKS FAN!</div>
+    <div class="gag gag-pizza">&#127829; PIZZA TIME!</div>
+    <div class="gag gag-swim">&#127946;&#8205;&#9794;&#65039; &#127754; CANNONBALL!</div>
+    <div class="gag gag-ronaldo">&#9917; &#127477;&#127481; SIUUUU!!</div>
+    <div class="gag gag-kaleb">&#129464; SIDEKICK KALEB, ASSEMBLE!</div>
+    <div class="gag gag-school">&#127891; WATCH OUT, KINDERGARTEN&mdash;HERE COMES ELIJAH!</div>
+  </div>
+  <script>
+    document.addEventListener('gesturestart', function (e) { e.preventDefault(); });
+    document.addEventListener('gesturechange', function (e) { e.preventDefault(); });
+    document.addEventListener('wheel', function (e) {
+      if (e.ctrlKey) e.preventDefault();
+    }, { passive: false });
+    document.addEventListener('dblclick', function (e) { e.preventDefault(); });
+  </script>
+</body>
+</html>
